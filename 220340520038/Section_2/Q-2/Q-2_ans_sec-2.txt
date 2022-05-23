@@ -1,0 +1,45 @@
+/*2. Create a stored function by the name of FUNC1 to take three parameters, the 
+sides of a triangle. The function should return a Boolean value:- TRUE if the 
+triangle is valid, FALSE otherwise. A triangle is valid if the length of each side is 
+less than the sum of the lengths of the other two sides. Check if the dimensions 
+entered can form a valid triangle. Calling program for the stored function need not 
+be written.*/
+
+delimiter //
+create function FUNC1(side1 int,side2 int ,side3 int)
+returns boolean
+deterministic
+begin
+if (side1+ side2)>side3 and (side2+ side3)> side1 and (side1+ side3)> side2 then
+return TRUE;
+else 
+return FALSE;
+end if;
+end ; //
+delimiter ;
+-- drop function FUNC1;
+
+ create table Triangle
+ (side1 int,
+ side2 int,
+ side3 int,
+ Maek varchar(50)
+ );
+ desc Triangle;
+ -- drop table Triangle;
+ 
+ delimiter //
+ create procedure triangles(x int,y int,z int)
+ begin
+ if FUNC1(x ,y ,z )then
+ insert into Triangle values(x,y,z,'triangle is valid');
+ else
+ insert into Triangle values(x,y,z,'triangle is not valid');
+ end if;
+ end ; //
+ delimiter ;
+ -- drop procedure triangles;
+  call triangles(2,3,4);
+  call triangles(10,20,30);
+  call triangles(30,20,30);
+  select * from Triangle;
